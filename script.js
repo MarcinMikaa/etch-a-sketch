@@ -1,4 +1,4 @@
-const container = document.querySelector('#container');
+const container = document.querySelector('#gridContainer');
 
 function createGridOfSquares(gridSize) {
   for (let i = 0; i < gridSize; i++) {
@@ -8,4 +8,16 @@ function createGridOfSquares(gridSize) {
   }
 }
 
+function changeColorOfDiv() {
+  if (!this.classList.contains('mouseover')) {
+    this.classList.add('mouseover');
+  }
+}
+
 createGridOfSquares(256);
+
+const squares = document.querySelectorAll('.box');
+
+squares.forEach((square) => {
+  square.addEventListener('mouseover', changeColorOfDiv);
+});
