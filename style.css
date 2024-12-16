@@ -13,7 +13,7 @@ html {
   height: 100%;
 }
 
-header {
+.header {
   background: #89a8b2;
   color: #f1f0e8;
   text-align: center;
@@ -22,7 +22,7 @@ header {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-#container {
+.main {
   margin-top: 50px;
   display: flex;
   justify-content: center;
@@ -30,30 +30,25 @@ header {
 }
 
 #gridContainer {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   width: 640px;
   height: 640px;
   background-color: #fff;
   padding: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  gap: 0;
 }
 
 .box {
-  width: calc(100% / 16);
-  height: calc(100% / 16);
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
-  color: white;
-  border: 1px solid #ddd;
+  transition: background-color 0.3s ease;
 }
 
 .box:hover {
-  background-color: aqua;
+  background-color: lightgrey;
 }
 
 .mouseover {
