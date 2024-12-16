@@ -4,6 +4,7 @@ const btnEraser = document.querySelector('#eraserBtn');
 const colorPicker = document.querySelector('#colorPicker');
 const gridSizeRange = document.querySelector('#gridSizeRange');
 const gridSizeValue = document.querySelector('#gridSizeValue');
+isMouseDown = false;
 let isErasing = false;
 let currentColor = '#000000';
 
@@ -23,8 +24,24 @@ function createGridOfSquares(gridSize) {
   }
   const squares = document.querySelectorAll('.box');
   squares.forEach((square) => {
-    square.addEventListener('mouseover', changeColorOfDiv);
+    square.addEventListener('mousedown', startDrawing);
+    square.addEventListener('mouseover', drawIfMouseDown);
   });
+}
+
+function startDrawing(e) {
+  isMouseDown = true;
+  changeColorOfDiv.call(e.target);
+}
+
+function stopDrawing(e) {
+  isMouseDown = false;
+}
+
+function drawIfMouseDown(e) {
+  if (isMouseDown) {
+    changeColorOfDiv.call(e.target);
+  }
 }
 
 function changeColorOfDiv() {
@@ -51,6 +68,7 @@ function clearGrid() {
   });
 }
 
+document.addEventListener('mouseup', stopDrawing);
 createGridOfSquares(16);
 
 gridSizeRange.addEventListener('input', () => {
