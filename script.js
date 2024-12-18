@@ -1,64 +1,64 @@
 const container = document.querySelector('#gridContainer');
 const btnClear = document.querySelector('#clearBtn');
-const btnEraser = document.querySelector('#eraserBtn');
+const btnEraser = document.querySelector('#eraseBtn');
+const btnDraw = document.querySelector('#drawBtn');
 const colorPicker = document.querySelector('#colorPicker');
 const gridSizeRange = document.querySelector('#gridSizeRange');
 const gridSizeValue = document.querySelector('#gridSizeValue');
-isMouseDown = false;
-let isErasing = false;
+
+let isMouseDown = false;
+let currentMode = 'draw';
 let currentColor = '#000000';
 
-btnEraser.addEventListener('click', toggleEraser);
 btnClear.addEventListener('click', clearGrid);
-colorPicker.addEventListener('input', changeColor);
+btnDraw.addEventListener('click', () => updateMode('draw'));
+btnEraser.addEventListener('click', () => updateMode('erase'));
+colorPicker.addEventListener('input', () => (currentColor = colorPicker.value));
+gridSizeRange.addEventListener('input', updateGrid);
+container.addEventListener('mousedown', onMouseDown);
+container.addEventListener('mouseover', onMouseOver);
+container.addEventListener('mouseup', () => (isMouseDown = false));
 
-function createGridOfSquares(gridSize) {
+function createGrid(gridSize) {
   container.innerHTML = '';
   container.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
   container.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
 
   for (let i = 0; i < gridSize * gridSize; i++) {
-    const newDiv = document.createElement('div');
-    newDiv.classList.add('box');
-    container.appendChild(newDiv);
-  }
-  const squares = document.querySelectorAll('.box');
-  squares.forEach((square) => {
-    square.addEventListener('mousedown', startDrawing);
-    square.addEventListener('mouseover', drawIfMouseDown);
-  });
-}
-
-function startDrawing(e) {
-  isMouseDown = true;
-  changeColorOfDiv.call(e.target);
-}
-
-function stopDrawing(e) {
-  isMouseDown = false;
-}
-
-function drawIfMouseDown(e) {
-  if (isMouseDown) {
-    changeColorOfDiv.call(e.target);
+    const square = document.createElement('div');
+    square.classList.add('box');
+    container.appendChild(square);
   }
 }
 
-function changeColorOfDiv() {
-  if (isErasing) {
-    this.style.backgroundColor = '';
+function onMouseDown(e) {
+  if (e.target.classList.contains('box')) {
+    isMouseDown = true;
+    applyColor(e.target);
+  }
+}
+
+function onMouseOver(e) {
+  if (isMouseDown && e.target.classList.contains('box')) {
+    applyColor(e.target);
+  }
+}
+
+function applyColor(square) {
+  square.style.backgroundColor = currentMode === 'erase' ? '' : currentColor;
+}
+
+function updateMode(mode) {
+  currentMode = mode;
+
+  btnDraw.classList.remove('active');
+  btnEraser.classList.remove('active');
+
+  if (mode === 'draw') {
+    btnDraw.classList.add('active');
   } else {
-    this.style.backgroundColor = currentColor;
+    btnEraser.classList.add('active');
   }
-}
-
-function toggleEraser() {
-  isErasing = !isErasing;
-  btnEraser.textContent = isErasing ? 'Drawing' : 'Eraser';
-}
-
-function changeColor() {
-  currentColor = colorPicker.value;
 }
 
 function clearGrid() {
@@ -68,11 +68,10 @@ function clearGrid() {
   });
 }
 
-document.addEventListener('mouseup', stopDrawing);
-createGridOfSquares(16);
-
-gridSizeRange.addEventListener('input', () => {
-  let gridSize = gridSizeRange.value;
+function updateGrid() {
+  const gridSize = gridSizeRange.value;
   gridSizeValue.textContent = `${gridSize} x ${gridSize}`;
-  createGridOfSquares(gridSize);
-});
+  createGrid(gridSize);
+}
+
+createGrid(16);

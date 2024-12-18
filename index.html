@@ -11,16 +11,16 @@
       <h1 class="title">Etch a Sketch</h1>
     </header>
     <main class="main">
-      <div id="controlMenu">
-        <h2>Options</h2>
+      <div class="control-menu">
         <div class="options-section">
           <input type="color" id="colorPicker" value="#000000" />
-          <input type="range" id="gridSizeRange" name="GridSize" min="1" max="124" value="16" />
-          <span id="gridSizeValue">16x16</span>
-          <button id="eraserBtn">Earser</button>
-        </div>
-        <div class="buttons-section">
-          <button id="clearBtn" class="control-button">Clear</button>
+          <button id="drawBtn" class="mode-btn btn active">Draw</button>
+          <button id="eraseBtn" class="mode-btn btn">Earse</button>
+          <div class="range-box">
+            <input type="range" id="gridSizeRange" name="GridSize" min="1" max="124" value="16" />
+            <span id="gridSizeValue">16x16</span>
+          </div>
+          <button id="clearBtn" class="btn">Clear</button>
         </div>
       </div>
       <div id="gridContainer"></div>
